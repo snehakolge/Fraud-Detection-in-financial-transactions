@@ -1,162 +1,201 @@
-# 💳 Fraud Transaction Detection Using Machine Learning
+# 💳 Fraud Detection in Financial Transactions
 
-## 📌 Project Overview
+An end-to-end Machine Learning project that detects fraudulent financial transactions using a trained model, deployed via a Flask API and an interactive Streamlit dashboard.
 
-This project develops a machine learning based fraud transaction detection system using supervised learning techniques The pipeline includes data preprocessing exploratory data analysis feature engineering class imbalance handling model training and evaluation
+---
 
-Behavior based features such as origin and destination balance differences transaction amount ratios and balance consistency indicators help detect abnormal transaction patterns Models are evaluated using Precision Recall F1 score ROC AUC score and Confusion Matrix with emphasis on recall due to dataset imbalance
+## 🚀 Project Overview
 
-This project demonstrates an interpretable and practical approach for building real world financial transaction fraud detection systems suitable for banking analytics workflows
+This project simulates a real-world fraud detection system used in banking and fintech. It includes:
 
+* Data preprocessing & feature engineering
+* Machine learning model training
+* Model deployment using Flask API
+* Interactive UI using Streamlit
+* End-to-end integration (Frontend ↔ Backend)
 
-## 🎯 Objectives
+---
 
-- Detect fraudulent financial transactions using machine learning models
-- Perform feature engineering to capture hidden fraud behavior patterns
-- Handle imbalanced datasets effectively
-- Evaluate model performance using classification metrics
-- Build an interpretable fraud detection pipeline
+## 🧠 Features
 
+* ✅ Detects fraudulent transactions in real-time
+* ✅ REST API for predictions
+* ✅ Interactive dashboard for user input
+* ✅ Feature engineering for improved model performance
+* ✅ Deployment-ready architecture
 
-## 📂 Dataset
+---
 
-The dataset contains financial transaction records with features such as
+## 🏗️ Project Structure
 
-- Transaction type
-- Transaction amount
-- Origin account balance
-- Destination account balance
-- Fraud label indicator
-
-Additional behavioral features were engineered for improving fraud detection capability
-
-Example engineered features
-
-- Origin balance difference
-- Destination balance difference
-- Amount ratio
-- Zero balance indicators
-- Balance consistency validation features
-
-
-## ⚙️ Machine Learning Workflow
-
-### Data Preprocessing
-
-- Handling missing values
-- Encoding categorical variables
-- Feature scaling if required
-
-
-### Exploratory Data Analysis
-
-- Fraud vs non fraud distribution
-- Transaction type analysis
-- Balance movement visualization
-- Outlier detection
-
-
-### Feature Engineering
-
-Created behavioral fraud indicators such as
-
-- Balance difference features
-- Transaction amount ratio
-- Zero balance anomaly flags
-
-
-### Handling Class Imbalance
-
-Applied techniques such as
-
-- Resampling methods
-- Class weighting
-
-
-### Model Training
-
-Models used in this project
-
-- Logistic Regression
-- Decision Tree Classifier
-- Random Forest Classifier
-
-
-## 📊 Model Evaluation Metrics
-
-Since fraud datasets are highly imbalanced evaluation focuses on
-
-- Precision
-- Recall
-- F1 Score
-- ROC AUC Score
-- Confusion Matrix
-
-Primary focus is given to Recall because detecting fraud transactions is critical in banking systems
-
-
-## 🛠️ Technologies Used
-
-- Python
-- Pandas
-- NumPy
-- Matplotlib
-- Seaborn
-- Scikit learn
-- Jupyter Notebook
-
-
-## 📁 Project Structure
-
-fraud-transaction-detection/
-
+```
+Fraud_detection/
 │
+├── flask_api/               # Flask backend API
+│   └── app.py
+│
+├── streamlit_app/           # Streamlit frontend UI
+│   └── streamlit_app.py
+│
+├── model_training/          # Training scripts
+│   └── train_model.py
+│
+├── predictor.py             # Prediction pipeline
+│
+├── fraud_model.pkl          # Trained model
+├── fraud_scaler.pkl         # Feature scaler
+├── fraud_le.pkl             # Label encoder
+│
+├── requirements.txt         # Dependencies
+├── Procfile                 # Deployment config
+├── runtime.txt              # Python version
+│
+└── README.md                # Documentation
+```
 
-├── data/
+---
 
-├── notebooks/
+## ⚙️ Tech Stack
 
-├── src/
+* Python 🐍
+* Scikit-learn
+* Pandas & NumPy
+* Flask (API)
+* Streamlit (Dashboard)
+* Gunicorn (Deployment)
 
-├── requirements.txt
+---
 
-├── README.md
+## 📊 Model Details
 
-└── .gitignore
+* Algorithm: **Random Forest Classifier**
+* Feature Engineering:
 
+  * Amount Ratio
+  * Balance Errors
+  * Full Transfer Indicator
+* Evaluation Metrics:
 
-## 🚀 How to Run the Project
+  * Accuracy
+  * Precision / Recall
+  * ROC-AUC Score
 
-Step 1 Clone repository
+> ⚠️ Note: ROC-AUC = 1.0 may indicate small dataset or data leakage. Further tuning recommended.
 
-git clone https://github.com/yourusername/fraud-transaction-detection.git
+---
 
+## 🔌 API Endpoints
 
-Step 2 Navigate to project folder
+### Health Check
 
-cd fraud-transaction-detection
+```
+GET /health
+```
 
+Response:
 
-Step 3 Install dependencies
+```json
+{
+  "model": "RandomForestClassifier",
+  "status": "ok"
+}
+```
 
+---
+
+### Predict Fraud
+
+```
+POST /predict
+```
+
+Sample Request:
+
+```json
+{
+  "step": 1,
+  "type": "PAYMENT",
+  "amount": 1000,
+  "oldbalanceOrg": 5000,
+  "newbalanceOrig": 4000,
+  "oldbalanceDest": 0,
+  "newbalanceDest": 1000
+}
+```
+
+Sample Response:
+
+```json
+{
+  "prediction": "Fraud",
+  "probability": 0.54
+}
+```
+
+---
+
+## 💻 Running Locally
+
+### 1️⃣ Install dependencies
+
+```
 pip install -r requirements.txt
+```
 
+### 2️⃣ Run Flask API
 
-Step 4 Run notebook
+```
+python flask_api/app.py
+```
 
-jupyter notebook
+### 3️⃣ Run Streamlit App
 
+```
+streamlit run streamlit_app/streamlit_app.py
+```
 
-## 📈 Future Improvements
+---
 
-- Add Autoencoder based anomaly detection
-- Deploy model using Flask or FastAPI
-- Build fraud risk scoring dashboard
-- Integrate real time transaction monitoring pipeline
+## 🌐 Deployment
 
+### Backend (Flask API)
 
-## 👩‍💻 Author
+* Deployed using **Render**
+* Uses **Gunicorn** as WSGI server
 
-Sneha Kolge
+### Frontend (Streamlit)
 
-Machine Learning Enthusiast focused on financial fraud detection systems and applied data science projects
+* Deployed using **Streamlit Cloud**
+
+---
+
+## 🔍 Explainability
+
+The dashboard provides insights into why a transaction is flagged as fraud:
+
+* Sender balance becomes zero
+* Receiver had no prior balance
+* Suspicious transfer patterns
+* High model confidence
+
+---
+
+## 📌 Future Improvements
+
+* 🔥 Add SHAP explainability
+* 🤖 Integrate LLM-based explanations
+* 📈 Handle class imbalance better
+* ☁️ Docker-based deployment
+* 📊 Real-time streaming (Kafka)
+
+---
+
+## 👤 Author
+
+**Sneha Kolge**
+
+---
+
+## ⭐ Support
+
+If you found this project useful, consider giving it a ⭐ on GitHub!
