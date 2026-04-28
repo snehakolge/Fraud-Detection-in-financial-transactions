@@ -9,6 +9,4 @@ joblib==1.4.2
 flask==3.0.3
 gunicorn==22.0.0
 
-# Streamlit (optional - only if deploying UI separately)
 streamlit==1.35.0
->>>>>>> 5b8716a (Fraud Detection API ready for deployment)
